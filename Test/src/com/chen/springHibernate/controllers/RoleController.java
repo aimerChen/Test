@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.chen.springHibernate.bean.Role;
 import com.chen.springHibernate.service.RoleService;
 
 /**  
@@ -33,10 +34,14 @@ public class RoleController {
 	
 	@RequestMapping(value="createRole", method = RequestMethod.POST)
 	@ResponseBody
-	public String createRole(@RequestParam String name){
+	public String createRole(@RequestParam String name,@RequestParam String priority){
 		System.out.println("role name:"+name);
+		char prio=(char) Integer.parseInt(priority);
+		Role role=new Role();
+		role.setName(name);
+		role.setPriority(prio);
 		if(name!=null){
-			mRoleService.register(name);
+			mRoleService.register(role);
 			return "success";
 		}
 		return "failed";

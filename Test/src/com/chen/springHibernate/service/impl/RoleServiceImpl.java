@@ -16,12 +16,12 @@ public class RoleServiceImpl implements RoleService{
 	private RoleDao roleDao;
 
 	@Override
-	public boolean register(String roleName) {
-		Role re=roleDao.findRoleByName(roleName);
+	public boolean register(Role role) {
+		Role re=roleDao.findRoleByName(role.getName());
 		if(re!=null){
 			return false;
 		}else{
-			return roleDao.create(roleName);
+			return roleDao.create(role);
 		}
 	}
 

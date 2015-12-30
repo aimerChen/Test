@@ -7,9 +7,9 @@
 	<insert id="saveRole" parameterType="Role" useGeneratedKeys="true"
 		keyProperty="id">
 		insert into role
-		(name,createTime)
+		(name,priority,createTime)
 		values
-		(#{roleName},
+		(#{roleName},#{priority}
 		now())
 
 	</insert>

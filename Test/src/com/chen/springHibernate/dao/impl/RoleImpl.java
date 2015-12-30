@@ -21,8 +21,8 @@ public class RoleImpl  implements RoleDao{
 	private SqlSessionTemplate mSqlSessionTemplate;
 	
 	@Override
-	public boolean create(String roleName) {
-		int result=mSqlSessionTemplate.insert("saveRole",roleName);
+	public boolean create(Role role) {
+		int result=mSqlSessionTemplate.insert("saveRole",role);
 		return result>0?true:false;
 	}
 
