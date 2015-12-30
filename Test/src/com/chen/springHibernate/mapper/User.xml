@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+    "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chen.springHibernate.mapper">
+	<!-- 创建用户 -->
+	<insert id="saveUser" parameterType="User" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into user
+		(name,password,salt,birthday,locked,createTime)
+		values
+		(#{name},
+		#{password},
+		#{salt},
+		#{birthday},
+		#{locked},
+		now())
+
+	</insert>
+
+	<select id="queryUserByName" parameterType="Map" resultType="User">
+		select c.name from user c
+		<where> c.name=#{name} </where>
+		limit 1;
+	</select>
+	
+	<!--在某些数据库中， LEFT JOIN 称为 LEFT OUTER JOIN -->
+	<select id="queryUsersByName" parameterType="Map" resultType="User">
+		select * from user u <where>u.name=#{name}</where>
+	</select>
+</mapper>

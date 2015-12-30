@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+    "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chen.springHibernate.mapper">
+	<!-- 创建用户 -->
+	<insert id="saveRole" parameterType="Role" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into role
+		(name,createTime)
+		values
+		(#{roleName},
+		now())
+
+	</insert>
+
+	<select id="queryRoleByName" parameterType="Map" resultType="Role">
+		select c.name from role c
+		<where> c.name=#{roleName} </where>
+		limit 1;
+	</select>
+</mapper>
