@@ -8,11 +8,12 @@
 	$(document).ready(function(){
 		$("#register").click(function(){
 			var name=$("#name").val();
-			if(name==""){
+			var priority=$("#priority").val();
+			if(name==""||priority<0||priority>10){
 				return false;
 			}
 			var path="<%=request.getContextPath()%>";
-			$.post(path+"/role/createRole.shtml",{name:name},function(data){
+			$.post(path+"/role/createRole.shtml",{name:name,priority:priority},function(data){
 				if(data==="success"){
 					alert("添加成功");
 				}else{
@@ -36,6 +37,7 @@
 			<tr>
 				<td>角色名字</td>
 				<td><input type="text" id="name" name="name"/></td>
+				<td><input type="text" id="priority" name="priority"/></td>
 			</tr>
 			<tr>
 				<td><input type="button" value="添加" id="register"/></td>

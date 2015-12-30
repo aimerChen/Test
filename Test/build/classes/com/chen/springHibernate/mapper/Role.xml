@@ -9,7 +9,7 @@
 		insert into role
 		(name,priority,createTime)
 		values
-		(#{roleName},#{priority}
+		(#{name},#{priority},
 		now())
 
 	</insert>

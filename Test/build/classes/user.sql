@@ -16,6 +16,7 @@ create table roles(
 	id int(11) auto_increment,
 	name varchar(128) unique not null,
 	createTime timestamp,
+	priority varchar(1),
 	primary key(id)
 )DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci engine=InnoDB;
 
