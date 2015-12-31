@@ -4,19 +4,24 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.chen.springHibernate.mapper">
 	<!-- 创建用户 -->
-	<insert id="saveRole" parameterType="Role" useGeneratedKeys="true"
-		keyProperty="id">
+	<insert id="saveRole" parameterType="Role" useGeneratedKeys="true" keyProperty="id">
 		insert into role
-		(name,priority,createTime)
+			(name,createTime,updateTime)
 		values
-		(#{name},#{priority},
-		now())
-
+			(#{name},now(),now());
 	</insert>
 
-	<select id="queryRoleByName" parameterType="Map" resultType="Role">
-		select c.name from role c
+	<select id="queryRoleByName" parameterType="Role" resultType="Role">
+		select * from role c
 		<where> c.name=#{roleName} </where>
 		limit 1;
 	</select>
+	
+	<select id="queryRolesByUserId" parameterType="java.lang.Integer" resultType="Role">
+		select * from role c where c.id in (select ru.roleid from roleuser ru where ru.userid=#{userId} )
+	</select>
+	
+	<update id="updateRole" parameterType="Role">
+		update role set(name,updateTime) values(#{name},now()) updateTime=now() <where> id=#{id}</where>;
+	</update>
 </mapper>

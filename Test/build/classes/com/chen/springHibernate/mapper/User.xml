@@ -24,8 +24,19 @@
 		limit 1;
 	</select>
 	
-	<!--在某些数据库中， LEFT JOIN 称为 LEFT OUTER JOIN -->
 	<select id="queryUsersByName" parameterType="Map" resultType="User">
 		select * from user u <where>u.name=#{name}</where>
 	</select>
+	
+	<update id="updateUser" parameterType="Map">
+		update user set birthday=#{birthday},locked=#{locked} <where> name=#{name} </where>
+	</update>
+	
+	<insert  id="addRoelsForUser" parameterType="Map" useGeneratedKeys="true" keyProperty="id">
+		insert into rolesuser(userid,roleid) values(#{userid},#{roleid});
+	</insert>
+	
+	<delete id="deleteUserById" parameterType="java.lang.Integer">
+		delete * from user <where> id=#{id}</where>
+	</delete>
 </mapper>
