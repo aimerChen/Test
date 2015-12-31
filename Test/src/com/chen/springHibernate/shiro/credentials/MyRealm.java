@@ -17,6 +17,7 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.chen.springHibernate.bean.Role;
 import com.chen.springHibernate.bean.User;
 import com.chen.springHibernate.service.UserService;
 import com.google.gson.Gson;
@@ -54,9 +55,9 @@ public class MyRealm extends AuthorizingRealm {
 			// 实体类User中包含有用户角色的实体类信息
 			if (null != user.getRoles() && user.getRoles().size() > 0) {
 				// 获取当前登录用户的角色
-				List<String> roles=user.getRoles();
-				for (String role : roles) {
-					roleList.add(role);
+				List<Role> roles=user.getRoles();
+				for (Role role : roles) {
+					roleList.add(role.getName());
 					// 实体类Role中包含有角色权限的实体类信息
 				}
 			}

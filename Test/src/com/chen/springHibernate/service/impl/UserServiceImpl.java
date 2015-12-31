@@ -23,14 +23,22 @@ public class UserServiceImpl implements UserService{
 		if(re!=null){
 			return false;
 		}else{
-			return mUserDao.create(user);
+			return mUserDao.create(user)==1;
 		}
 	}
 
 	@Override
 	public List<User> findUsersByName(String name) {
-		List<User> list= mUserDao.findUsersByName(name);
-		return list;
+		if(name!=null){
+			return mUserDao.findUsersByName(name);
+		}else{
+			return null;
+		}
+	}
+
+	@Override
+	public int addRolesForUser(int userId, int[] rolesId) {
+		return mUserDao.addRolesForUser(userId, rolesId);
 	}
 
 }

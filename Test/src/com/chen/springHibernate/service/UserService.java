@@ -7,4 +7,5 @@ import com.chen.springHibernate.bean.User;
 public interface UserService {
 	public boolean register(User user);
 	public List<User> findUsersByName(String name);
+	public int addRolesForUser(int userId,int[] rolesId);
 }

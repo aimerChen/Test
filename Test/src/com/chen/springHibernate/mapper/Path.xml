@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+    "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chen.springHibernate.mapper">
+	<!-- 创建用户 -->
+	<insert id="savePath" parameterType="path" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into path
+			(name,createTime,role_id)
+		values
+			(#{name},now(),#{role_id});
+	</insert>
+
+	<select id="queryPathsByName" parameterType="Role" resultType="Role">
+		select * from path c <where> c.name=#{roleName} and c.role_id=#{role_id}</where>
+	</select>
+	
+	<select id="queryPathsByLikeName" parameterType="Role" resultType="Role">
+		select * from path c <where> c.name like #{roleName} and c.role_id=#{role_id}</where>
+	</select>
+	
+	<select id="queryPathsByRoleId" parameterType="Role" resultType="Role">
+		select * from path c <where> c.role_id=#{role_id} </where>
+	</select>
+	
+	<delete id="deletePathsByRoleId" parameterType="Role">
+		delete * from path c <where> c.role_id=#{role_id} </where>
+	</delete>
+	
+	<delete id="deletePathsByName" parameterType="Role">
+		delete * from path c <where> c.name=#{name} and c.role_id=#{role_id}</where>
+	</delete>
+	
+	<update id="updatePath" parameterType="Role">
+		update path set(name,createTime,role_id) values(#{name},now(),#{role_id}) <where> id=#{id}</where>;
+	</update>
+</mapper>

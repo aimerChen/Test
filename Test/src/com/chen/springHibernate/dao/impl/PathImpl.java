@@ -1,0 +1,54 @@
+package com.chen.springHibernate.dao.impl;
+
+import java.util.List;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.chen.springHibernate.bean.Path;
+import com.chen.springHibernate.dao.PathDao;
+
+@Repository
+public class PathImpl implements PathDao{
+
+	@Autowired
+	private SqlSessionTemplate sqlSessionTemplate;
+	
+	@Override
+	public int create(Path path) {
+		return sqlSessionTemplate.insert("savePath", path);
+	}
+
+	@Override
+	public int update(Path path) {
+		return sqlSessionTemplate.update("updatePath", path);
+	}
+
+	@Override
+	public List<Path> queryPathsByName(String pathName) {
+		return sqlSessionTemplate.selectList("queryPathsByName", pathName);
+	}
+	
+	@Override
+	public List<Path> queryPathsByLikeName(String pathName) {
+		return sqlSessionTemplate.selectList("queryPathsByLikeName", pathName);
+	}
+
+	@Override
+	public List<Path> queryPathsByRoleId(int roleId) {
+		return sqlSessionTemplate.selectList("queryPathsByRoleId", roleId);
+	}
+
+
+	@Override
+	public int delete(Path path) {
+		return sqlSessionTemplate.delete("", path);
+	}
+
+	@Override
+	public int deletePathsByRoleId(int roleId) {
+		return sqlSessionTemplate.delete("deletePathsByRoleId", roleId);
+	}
+
+}

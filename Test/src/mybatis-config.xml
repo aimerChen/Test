@@ -6,11 +6,13 @@
 	<typeAliases>
 	    <typeAlias alias="user" type="com.chen.springHibernate.bean.User"/>
 	    <typeAlias alias="role" type="com.chen.springHibernate.bean.Role"/>
+	    <typeAlias alias="path" type="com.chen.springHibernate.bean.Path"/>
 	</typeAliases>
 	
 	<mappers>
 		<!-- User 管理 -->
 		<mapper resource="com/chen/springHibernate/mapper/User.xml"/>
 		<mapper resource="com/chen/springHibernate/mapper/Role.xml"/>
+		<mapper resource="com/chen/springHibernate/mapper/Path.xml"/>
 	</mappers>
 </configuration> 

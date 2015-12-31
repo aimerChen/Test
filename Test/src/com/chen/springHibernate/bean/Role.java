@@ -1,13 +1,14 @@
 package com.chen.springHibernate.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**  
 * @author Chen Benwen 
 * @E-mail:  
 * @version V 1.0.0
 * @创建时间：Dec 30, 2015 2:30:17 PM  
-* @类说明 :
+* @类说明 :在数据库中，name唯一
 */
 public class Role implements Serializable{
 
@@ -18,7 +19,7 @@ public class Role implements Serializable{
 
 	private int id;
 	private String name="";
-	private char priority;
+	private List<Path> path;
 	private long createTime;
 	public int getId() {
 		return id;
@@ -36,11 +37,13 @@ public class Role implements Serializable{
 	public void setCreateTime(long createTime) {
 		this.createTime = createTime;
 	}
-	public char getPriority() {
-		return priority;
+
+	public List<Path> getPath() {
+		return path;
 	}
-	public void setPriority(char priority) {
-		this.priority = priority;
+
+	public void setPath(List<Path> path) {
+		this.path = path;
 	}
 	
 }

@@ -16,7 +16,7 @@ public class User implements Serializable{
 	private String birthday="";
 	private int locked=0;//0:没有锁定；1：锁定
 	private String salt="";
-	private List<String> roles;
+	private List<Role> roles;
 	private long createTime;
 	
 	public String getSalt() {
@@ -63,12 +63,18 @@ public class User implements Serializable{
 		this.createTime = createTime;
 	}
 	
-	public List<String> getRoles() {
+	public List<Role> getRoles() {
 		return roles;
 	}
-	public void setRoles(List<String> roles) {
+	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
+	
+	public int getMaxPriority(){
+		
+		return 0;
+	}
+	
 	@Override
 	public String toString(){
 		StringBuilder sp=new StringBuilder();

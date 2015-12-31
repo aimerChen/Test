@@ -1,5 +1,7 @@
 package com.chen.springHibernate.dao.impl;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -21,15 +23,23 @@ public class RoleImpl  implements RoleDao{
 	private SqlSessionTemplate mSqlSessionTemplate;
 	
 	@Override
-	public boolean create(Role role) {
-		int result=mSqlSessionTemplate.insert("saveRole",role);
-		return result>0?true:false;
+	public int create(Role role) {
+		return mSqlSessionTemplate.insert("saveRole",role);
 	}
 
 	@Override
 	public Role findRoleByName(String roleName) {
-		Role role=mSqlSessionTemplate.selectOne("queryRoleByName",roleName);
-		return role;
+		return mSqlSessionTemplate.selectOne("queryRoleByName",roleName);
+	}
+
+	@Override
+	public int update(Role role) {
+		return mSqlSessionTemplate.update("updateRole",role);
+	}
+
+	@Override
+	public List<Role> queryRolesByUserId(int userId) {
+		return mSqlSessionTemplate.selectList("queryRolesByUserId",userId);
 	}
 
 }

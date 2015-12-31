@@ -1,6 +1,8 @@
 package com.chen.springHibernate.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,23 +20,15 @@ public class UserImpl implements UserDao{
 	private SqlSessionTemplate mSqlSessionTemplate;
 	
 	@Override
-	public boolean create(User user) {
-		int result=mSqlSessionTemplate.insert("saveUser",user);
-		return result>0?true:false;
+	public int create(User user) {
+		return mSqlSessionTemplate.insert("saveUser",user);
 	}
 
 	@Cacheable(value="test-cache",key="#user.getName()")
 	@CacheEvict(value="test-cache",key="#user.getName()")//evict:回收
 	@Override
 	public User findUserByName(User user) {
-		System.out.println("走数据库User");
-		User dbuser=mSqlSessionTemplate.selectOne("queryUserByName",user);
-		if(dbuser!=null){
-			System.out.println("object re:"+dbuser.toString());
-		}else{
-			System.out.println("dbuser不存在");
-		}
-		return dbuser;
+		return mSqlSessionTemplate.selectOne("queryUserByName",user);
 	}
 
 	@Cacheable(value="test-cache",key="#name")
@@ -42,8 +36,30 @@ public class UserImpl implements UserDao{
 	@Override
 	public List<User> findUsersByName(String name) {
 		System.out.println("走数据库List");
-		List<User> list= mSqlSessionTemplate.selectList("queryUsersByName",name);
-		System.out.println("object:"+list.toString());
-		return list;
+		return mSqlSessionTemplate.selectList("queryUsersByName",name);
+	}
+
+	@Override
+	public int updateUser(User user) {
+		return mSqlSessionTemplate.update("updateUser",user);
+	}
+
+	@Override
+	public int deleteUserById(int id) {
+		return mSqlSessionTemplate.update("deleteUserById",id);
+	}
+
+	@Override
+	public int addRolesForUser(int userId, int[] rolesId) {
+		Map<String,Object> pm=new HashMap<String,Object>();
+		pm.put("userId", userId);
+		int result=0;
+		for(int i=0;i<rolesId.length;i++){
+			pm.put("roleId", rolesId[i]);
+			if(mSqlSessionTemplate.insert("addRoelsForUser",pm)==1){
+				result++;
+			}
+		}
+		return result;
 	}
 }
