@@ -32,7 +32,7 @@ function logout(){
 		<p><a href="<%=request.getContextPath()%>/sysuser/home.shtml">系统管理员</a>
 	</shiro:hasAnyRoles>
 	<center>
-		<h1>User Home</h1>
+		<h1>SysUser Home</h1>
 	</center>
 
 	<table border="1" align="center">

@@ -21,7 +21,7 @@ public class ChainDefinitionSectionMetaSource implements FactoryBean<Ini.Section
 		Ini.Section section = ini.getSection(Ini.DEFAULT_SECTION_NAME);
 		// 循环Resource的url,逐个添加到section中。section就是filterChainDefinitionMap,
 		// 里面的键就是链接URL,值就是存在什么条件才能访问该链接
-		section.put("/**", "authc,kickout,sysUser,user");
+		section.put("/**", "authc,kickout,user");
 		System.out.println("section："+new Gson().toJson(section));
 		return section;
 	}

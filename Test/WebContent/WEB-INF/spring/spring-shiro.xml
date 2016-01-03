@@ -51,7 +51,7 @@
 		<!--<property name="authorizationCacheName" value="authorizationCache"/> -->
 	</bean>
 
-	<bean id="sysUserFilter" class="com.chen.springHibernate.shiro.filter.SysUserFilter" />
+	<!-- <bean id="sysUserFilter" class="com.chen.springHibernate.shiro.filter.SysUserFilter" /> -->
 
 	<bean id="kickoutSessionControlFilter"
 		class="com.chen.springHibernate.shiro.filter.KickoutSessionControlFilter">
@@ -74,7 +74,7 @@
 		<property name="filterChainDefinitionMap" ref="chainDefinitionSectionMetaSource" />
 		<property name="filters">
 			<util:map>
-				<entry key="sysUser" value-ref="sysUserFilter" />
+				<!-- <entry key="sysUser" value-ref="sysUserFilter" /> -->
 				<entry key="kickout" value-ref="kickoutSessionControlFilter" />
 			</util:map>
 		</property>
@@ -92,7 +92,7 @@
 				/user/register.shtml**= anon
 				/user/login.shtml** = anon
 				/admin/**=authc,roles[admin]
-				/sysUser/**=authc
+				/sysUser/**=authc,roles[sysUser]
 			</value>
 		</property>
 	</bean>
