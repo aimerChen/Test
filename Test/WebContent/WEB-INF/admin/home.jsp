@@ -8,7 +8,7 @@
 <head>
 <title>Admin Home</title>
 
-<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript">
 
 function logout(){
@@ -28,15 +28,11 @@ function logout(){
 </shiro:notAuthenticated>
 
 <shiro:authenticated>
-	<a href="#" onclick="logout()">注销</a>
-	<shiro:hasAnyRoles name="sysuser">
-		<p>欢迎<a href="<%=request.getContextPath()%>/sysuser/home.shtml">系统管理员<%=session.getAttribute("username")%></a></p>
-	</shiro:hasAnyRoles>
-	<shiro:hasAnyRoles name="admin">
+	<shiro:hasAnyRoles name="sysuser,admin">
 		<p>欢迎管理员<%=session.getAttribute("username")%></p>
 	</shiro:hasAnyRoles>
 	<center>
-		<h1>User Home</h1>
+		<h1>Admin Home</h1>
 	</center>
 
 	<table border="1" align="center">
@@ -75,6 +71,7 @@ function logout(){
 			</td>
 		</tr>
 	</table>
+	<a href="#" onclick="logout()">注销</a>
 </shiro:authenticated>
 </body>
 </html>

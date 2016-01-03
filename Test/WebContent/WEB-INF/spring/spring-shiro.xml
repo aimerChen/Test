@@ -92,7 +92,7 @@
 				/user/register.shtml**= anon
 				/user/login.shtml** = anon
 				/admin/**=authc,roles[admin]
-				/sysuser/**=authc,roles[sysUser]<!-- 系统管理员主界面 -->
+				/sysUser/**=authc
 			</value>
 		</property>
 	</bean>

@@ -94,7 +94,7 @@ public class SysUserController {
 	 * @param roleIdStr
 	 * @return
 	 */
-	@RequestMapping(value="checkRole", method = RequestMethod.POST)
+	@RequestMapping(value="addRoleForUser", method = RequestMethod.POST)
 	@ResponseBody
 	public int addRolesForUser(@RequestParam int userId,@RequestParam String roleIdStr){
 		if(roleIdStr!=null&&userId>=0){

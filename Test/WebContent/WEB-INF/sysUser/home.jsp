@@ -8,7 +8,7 @@
 <head>
 <title>System User Home</title>
 
-<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript">
 
 function logout(){
@@ -29,10 +29,7 @@ function logout(){
 
 <shiro:authenticated>
 	<shiro:hasAnyRoles name="sysuser">
-		<a href="<%=request.getContextPath()%>/sysuser/home.shtml">系统管理员</a>
-	</shiro:hasAnyRoles>
-	<shiro:hasAnyRoles name="admin">
-		<p>是管理员</p>
+		<p><a href="<%=request.getContextPath()%>/sysuser/home.shtml">系统管理员</a>
 	</shiro:hasAnyRoles>
 	<center>
 		<h1>User Home</h1>
@@ -40,7 +37,7 @@ function logout(){
 
 	<table border="1" align="center">
 		<tr bgcolor="#949494">
-			<th>User info</th>
+			<th>SysUser info</th>
 			<th>Value</th>
 		</tr>
 		<tr>
