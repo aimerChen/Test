@@ -10,11 +10,11 @@
 	
 	//删除和编辑Path
 	function deletePathById(id){
-		alert("删除id"+id);
+		alert(id);
 	}
 	//删除和编辑Path
 	function editPathById(id){
-		alert("编辑id"+id);
+		alert(id);
 	}
 	
 	function getPathList(){
