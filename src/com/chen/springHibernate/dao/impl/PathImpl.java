@@ -41,8 +41,14 @@ public class PathImpl implements PathDao {
 	}
 
 	@Override
+	public int deleteById(int id) {
+		return sqlSessionTemplate.delete("deletePathById", id);
+	}
+	
+	@Override
 	public List<Path> findAllPaths() {
 		return sqlSessionTemplate.selectList("findAllPaths");
 	}
+
 
 }

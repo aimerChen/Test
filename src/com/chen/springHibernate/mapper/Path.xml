@@ -47,8 +47,11 @@
 	</update>
 
 	<delete id="deletePath" parameterType="Path">
-		delete * from path c
+		delete from path c
 		<where> c.id=#{id}</where>
+	</delete>
+	<delete id="deletePathById" parameterType="java.lang.Integer">
+		DELETE FROM path <where> id=#{id}</where>
 	</delete>
 
 

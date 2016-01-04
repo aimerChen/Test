@@ -93,6 +93,30 @@ public class SysUserController {
 		return -1;
 	}
 	
+	/**
+	 * 
+	 * @param userId
+	 * @param roleIdStr
+	 * @return
+	 */
+	@RequestMapping(value="addRolesForUser", method = RequestMethod.POST)
+	@ResponseBody
+	public int addRolesForUser(@RequestParam int userId,@RequestParam String roleIdStr){
+		if(roleIdStr!=null&&userId>=0){
+			String[] ints=roleIdStr.split(",");
+			int[] rolesId = new int[ints.length];
+			for(int i=0;i<ints.length;i++){
+				rolesId[i]=Integer.parseInt(ints[i]);
+			}
+			if(userId>=0){
+				mUserService.addRolesForUser(userId, rolesId);
+			}
+			return 1;
+		}
+		return 0;
+	}
+	
+
 
 	/**
 	 * 
@@ -128,26 +152,15 @@ public class SysUserController {
 		return new Gson().toJson(mPathService.findAllPaths());
 	}
 	
+	
 	/**
 	 * 
-	 * @param userId
-	 * @param roleIdStr
-	 * @return
+	 * @param name
+	 * @return <p>返回添加path的个数
 	 */
-	@RequestMapping(value="addRolesForUser", method = RequestMethod.POST)
+	@RequestMapping(value="deletePath", method = RequestMethod.POST)
 	@ResponseBody
-	public int addRolesForUser(@RequestParam int userId,@RequestParam String roleIdStr){
-		if(roleIdStr!=null&&userId>=0){
-			String[] ints=roleIdStr.split(",");
-			int[] rolesId = new int[ints.length];
-			for(int i=0;i<ints.length;i++){
-				rolesId[i]=Integer.parseInt(ints[i]);
-			}
-			if(userId>=0){
-				mUserService.addRolesForUser(userId, rolesId);
-			}
-			return 1;
-		}
-		return 0;
+	public int deletePath(@RequestParam int id){
+		return mPathService.deleteById(id);
 	}
 }
