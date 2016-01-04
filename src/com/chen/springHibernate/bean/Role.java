@@ -1,0 +1,49 @@
+package com.chen.springHibernate.bean;
+
+import java.io.Serializable;
+import java.util.List;
+
+/**  
+* @author Chen Benwen 
+* @E-mail:  
+* @version V 1.0.0
+* @创建时间：Dec 30, 2015 2:30:17 PM  
+* @类说明 :在数据库中，name唯一
+*/
+public class Role implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private int id;
+	private String name="";
+	private List<Path> path;
+	private long createTime;
+	public int getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public long getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(long createTime) {
+		this.createTime = createTime;
+	}
+
+	public List<Path> getPath() {
+		return path;
+	}
+
+	public void setPath(List<Path> path) {
+		this.path = path;
+	}
+	
+}

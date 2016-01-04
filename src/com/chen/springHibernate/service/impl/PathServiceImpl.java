@@ -1,0 +1,62 @@
+package com.chen.springHibernate.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.chen.springHibernate.bean.Path;
+import com.chen.springHibernate.dao.PathDao;
+import com.chen.springHibernate.service.PathService;
+
+@Service
+@Transactional
+public class PathServiceImpl implements PathService{
+
+	@Autowired
+	private PathDao pathDao;
+
+	@Override
+	public boolean register(Path path) {
+		Path dbPath=pathDao.findPathByName(path.getName());
+		if(dbPath!=null){
+			//角色存在，则更新角色对应的path
+			return false;
+		}else{//创建角色和path
+			return pathDao.register(path)==1;//role 创建成功
+		}
+	}
+
+	@Override
+	public List<Path> findPathsByName(String pathName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Path> findPathsByLikeName(String pathName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int update(Path path) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int delete(Path path) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<Path> findAllPaths() {
+		// TODO Auto-generated method stub
+		return pathDao.findAllPaths();
+	}
+	
+
+}
