@@ -90,4 +90,9 @@ public class RoleImpl  implements RoleDao{
 	public int deleteRole(int roleId) {
 		return mSqlSessionTemplate.delete("deleteRole", roleId);
 	}
+
+	@Override
+	public Path findRolePathById(Map<String,Integer> map) {
+		return mSqlSessionTemplate.selectOne("queryRolePathById", map);
+	}
 }

@@ -8,32 +8,77 @@
 <script type="text/javascript">
 	var requestPath="<%=request.getContextPath()%>";
 	
-	//删除和编辑Path
+	//删除Path
 	function deletePathById(id){
-		alert("删除id"+id);
+		$.post(requestPath + "/sysUser/deletePathById.shtml",{id:id},function(data) {
+			if (data ===1) {
+				$("#deletePath_"+id).closest("tr").remove();
+			}else{
+				alert("删除失败");
+			}
+		});
 	}
-	//删除和编辑Path
-	function editPathById(id){
-		alert("编辑id"+id);
+	//提交更新了的Path
+	function submitEditPathById(id){
+		var nameBefore=$("#pathNameLabel_"+id).text();
+		var nameAfter=$("#pathEditNameLabel_"+id).val();
+		var object =$("#pathLabelTr_"+id);
+		var objectEdit =$("#pathEditTr_"+id);
+		if(nameBefore!==nameAfter&&nameAfter!=""){
+			$.post(requestPath+"/sysUser/updatePathById.shtml",{id:id,name:nameAfter},function(data){
+				if(data===1){
+					$("#pathNameLabel_"+id).text(nameAfter);
+					$(objectEdit).css("display","none");
+					$(object).css("display","block");
+				}else{
+					alert("更新失败");
+					return;
+				}
+			});
+		}else{
+			$(objectEdit).css("display","none");
+			$(object).css("display","block");
+		}
 	}
 	
+	
+	function changeModel(model,id){
+		var object =$("#pathLabelTr_"+id);
+		var objectEdit =$("#pathEditTr_"+id);
+		if(model===1){//转换到编辑模式
+			$(object).css("display","none");
+			$(objectEdit).css("display","block");
+		}else{//转换到显示模式
+			$(objectEdit).css("display","none");
+			$(object).css("display","block");
+		}
+	}
+	
+	//获取所有的list
 	function getPathList(){
 		$.post(requestPath + "/sysUser/showAllPaths.shtml", function(data) {
 			if (data !== null) {
 				var tempStr = eval(data);
 				var html="<tr><td><h1>路径列表</h1></td></tr>";
 			    $.each(tempStr, function(index,item){
-					html+="<tr>"
-						+"<td>"+item.name+"</td>"
-						+"<td>"+item.createTime+"</td>"
-						+"<td><input type='button' onclick='editPathById("+item.id+")' value='编辑'/></td>"
-						+"<td><input type='button' onclick='deletePathById("+item.id+")' value='删除'/></td>"
+					html+="<tr id='pathLabelTr_"+item.id+"'>"
+						//+"<td><label id='pathIdLabel_"+item.id+"'>"+item.id+"</label></td>"
+						+"<td><label id='pathNameLabel_"+item.id+"'>"+item.name+"</label></td>"
+						+"<td><label id='pathCreateTimeLabel_"+item.id+"'>"+item.createTime+"</label></td>"
+						+"<td><input type='button' id='editPath_"+item.id+"' value='编辑' onclick='changeModel(1,"+item.id+")'/></td>"
+						+"<td><input type='button' id='deletePath_"+item.id+"' onclick='deletePathById("+item.id+")' value='删除'/></td>"
+						+"</tr>";
+					html+="<tr id='pathEditTr_"+item.id+"' style='display:none'>"
+						+"<td><input id='pathEditNameLabel_"+item.id+"' type='text' value='"+item.name+"'/></td>"
+						+"<td><input type='button' id='submitEditPath_"+item.id+"' onclick='submitEditPathById("+item.id+")' value='提交'/></td>"
+						+"<td><input type='button' id='cancelEditPath_"+item.id+"'  onclick='changeModel(2,"+item.id+")' value='取消'/></td>"
 						+"</tr>";
 		        });
 				$("#pathTable").html(html);
 			}
 		});
 	}
+	
 	$(document).ready(function(){
 		getPathList();
 		$("#register").click(function() {
@@ -46,7 +91,6 @@
 				pathStr : pathStr
 			}, function(data) {
 				if (data >= 1) {
-					alert("添加成功");
 					$("#name").val("");
 					getPathList();
 				} else if (data === 0) {

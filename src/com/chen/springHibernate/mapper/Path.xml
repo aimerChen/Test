@@ -7,20 +7,20 @@
 	<insert id="savePath" parameterType="path" useGeneratedKeys="true"
 		keyProperty="id">
 		insert into path
-		(name,createTime)
+		(name,createTime,updateTime)
 		values
-		(#{name},now());
+		(#{name},now(),now());
 	</insert>
 
 	<!-- 批量插入，没有用到 -->
 	<insert id="savePaths" parameterType="java.util.List"
 		useGeneratedKeys="true" keyProperty="id">
 		insert into path
-		(name,createTime)
+		(name,createTime,updatTime)
 		values
 		<foreach collection="list" item="item" index="index"
 			separator=",">
-			(#{item.name},now())
+			(#{item.name},now(),now())
 		</foreach>
 	</insert>
 
@@ -41,14 +41,13 @@
 	</select>
 
 	<update id="updatePath" parameterType="Path">
-		update path set(name) values(#{name})
+		update path set name=#{name},updateTime=now()
 		<where> id=#{id}</where>
-		;
 	</update>
 
-	<delete id="deletePath" parameterType="Path">
-		delete * from path c
-		<where> c.id=#{id}</where>
+	<delete id="deletePathById" parameterType="int">
+		DELETE FROM path
+		<where> id=#{id}</where>
 	</delete>
 
 

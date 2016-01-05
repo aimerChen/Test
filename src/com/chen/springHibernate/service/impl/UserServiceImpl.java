@@ -100,4 +100,9 @@ public class UserServiceImpl implements UserService {
 		return (mUserDao.deleteUserById(user.getId())==1)&&(mUserDao.deleteAllRolesOfUser(user.getId())>=0);
 	}
 
+	@Override
+	public List<User> findAllUsers() {
+		return mUserDao.findAllUsers();
+	}
+
 }

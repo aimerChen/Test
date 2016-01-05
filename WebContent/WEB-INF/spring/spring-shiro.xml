@@ -86,7 +86,6 @@
 		class="com.chen.springHibernate.shiro.ChainDefinitionSectionMetaSource">
 		<property name="filterChainDefinitions">
 			<value>
-				/role/**=anon,kickout
 				/js/**=anon
 				/index.shtml**= anon,kickout
 				/user/register.shtml**= anon,kickout

@@ -43,19 +43,19 @@ public class PathServiceImpl implements PathService{
 	@Override
 	public int update(Path path) {
 		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int delete(Path path) {
-		// TODO Auto-generated method stub
-		return 0;
+		return pathDao.update(path);
 	}
 
 	@Override
 	public List<Path> findAllPaths() {
 		// TODO Auto-generated method stub
 		return pathDao.findAllPaths();
+	}
+
+	@Override
+	public int deleteById(int id) {
+		// TODO Auto-generated method stub
+		return pathDao.deleteById(id);
 	}
 	
 

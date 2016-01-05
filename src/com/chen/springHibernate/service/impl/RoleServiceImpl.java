@@ -21,13 +21,16 @@ public class RoleServiceImpl implements RoleService{
 	private RoleDao roleDao;
 	
 	@Override
-	public boolean register(Role role) {
-		Role dbRole=roleDao.findRoleByName(role.getName());
+	public boolean register(String roleName,int[] pathIdList) {
+		Role dbRole=roleDao.findRoleByName(roleName);
 		int id=-1;
+		Role role=new Role();
 		if(dbRole!=null){
 			//角色存在，则更新角色对应的path
-			id=dbRole.getId();
+//			id=dbRole.getId();
+			return false;
 		}else{//创建角色和path
+			role.setName(roleName);
 			if(roleDao.register(role)==1){//role 创建成功
 				id=role.getId();
 			}else{
@@ -35,16 +38,25 @@ public class RoleServiceImpl implements RoleService{
 				return false;
 			}
 		}
-		//role在数据库存在了
-		if(id>=0&&role.getPath()!=null){
+		//role在数据库存在了,然后插入对应的path权限
+		if(id>=0&&pathIdList.length>0){
 			Map<String,Integer> pm=new HashMap<String,Integer>();
 			pm.put("roleid", role.getId());
-			for(Path path:role.getPath()){
-				pm.put("pathid", path.getId());
-				roleDao.registerPathForRole(pm);
+			for(int i=0;i<pathIdList.length;i++){
+				pm.put("pathid", pathIdList[i]);
+				if(roleDao.findRolePathById(pm)==null){
+					//该角色对应的path没有插入到数据库，现在插入
+					addRolePaths(pm);
+				}
 			}
 		}
 		return true;
+	}
+	
+
+	@Override
+	public int addRolePaths(Map<String, Integer> map) {
+		return roleDao.registerPathForRole(map);
 	}
 
 	@Override
@@ -57,8 +69,14 @@ public class RoleServiceImpl implements RoleService{
 	}
 
 	@Override
-	public List<Role> queryAllRoles() {
-		return roleDao.queryAllRoles();
+	public List<Role> findAllRoles() {
+		List<Role> roleList=roleDao.queryAllRoles();
+		if(roleList!=null){
+			for(Role role:roleList){
+				role.setPath(roleDao.queryPathsByRoleId(role.getId()));
+			}
+		}
+		return roleList;
 	}
 
 	@Override
@@ -71,8 +89,34 @@ public class RoleServiceImpl implements RoleService{
 	}
 
 	@Override
-	public boolean deleteRole(int roleId) {
-		return (roleDao.deleteRole(roleId)==1)&&(roleDao.deletePathsByRoleId(roleId)>=0);
+	public int deleteRoleById(int roleId) {
+		int result=0;
+		if((result=roleDao.deleteRole(roleId))==1){
+			roleDao.deletePathsByRoleId(roleId);
+		}
+		return result;
 	}
+
+	@Override
+	public Path findRolePathById(Map<String, Integer> map) {
+		// TODO Auto-generated method stub
+		return roleDao.findRolePathById(map);
+	}
+
+	@Override
+	public int update(Role role) {
+		int result=0;
+		if(role!=null){
+			result=roleDao.update(role);
+		}
+		return result;
+	}
+
+	@Override
+	public int deleteRolePathsById(int roleId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 }

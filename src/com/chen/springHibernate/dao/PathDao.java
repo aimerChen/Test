@@ -10,5 +10,5 @@ public interface PathDao {
 	public List<Path> findPathsByLikeName(String pathName);
 	public List<Path> findAllPaths();
 	public int update(Path path);
-	public int delete(Path path);
+	public int deleteById(int id);
 }

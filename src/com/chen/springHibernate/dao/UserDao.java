@@ -14,6 +14,9 @@ public interface UserDao {
 	 * @return
 	 */
 	public List<User> findUsersByLikeName(String name);
+	
+	public List<User> findAllUsers();
+	
 	public int updateUser(User user);
 	
 	/**

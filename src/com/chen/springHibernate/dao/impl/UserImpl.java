@@ -68,4 +68,9 @@ public class UserImpl implements UserDao{
 	public int deleteAllRolesOfUser(int userId) {
 		return mSqlSessionTemplate.delete("deleteAllRolesOfUser",userId);
 	}
+
+	@Override
+	public List<User> findAllUsers() {
+		return mSqlSessionTemplate.selectList("queryAllUsers");
+	}
 }

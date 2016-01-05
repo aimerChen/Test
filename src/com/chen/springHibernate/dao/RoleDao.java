@@ -14,6 +14,12 @@ public interface RoleDao {
 	public Role findRoleById(int roleId);
 	public List<Role> queryAllRoles();
 	public List<Path> queryPathsByRoleId(int roleId);
+	/**
+	 * 在rolepath表中的记录：表示该role是否已经有这个path的权限了；有，则不写入；否则，插入到数据库
+	 * @param pathId
+	 * @return
+	 */
+	public Path findRolePathById(Map<String,Integer> map);
 	public int deletePathsByRoleId(int roleId);
 	public int deleteRole(int roleId);
 }

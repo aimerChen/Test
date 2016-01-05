@@ -20,9 +20,13 @@ public class Role implements Serializable{
 	private int id;
 	private String name="";
 	private List<Path> path;
-	private long createTime;
+	private String createTime;
 	public int getId() {
 		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -31,12 +35,12 @@ public class Role implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public long getCreateTime() {
+	public String getCreateTime() {
 		return createTime;
 	}
-	public void setCreateTime(long createTime) {
-		this.createTime = createTime;
-	}
+//	public void setCreateTime(String createTime) {
+//		this.createTime = createTime;
+//	}
 
 	public List<Path> getPath() {
 		return path;

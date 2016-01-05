@@ -17,7 +17,7 @@ public class User implements Serializable{
 	private int locked=0;//0:没有锁定；1：锁定
 	private String salt="";
 	private List<Role> roles;
-	private long createTime;
+	private String createTime;
 	
 	public String getSalt() {
 		return salt;
@@ -56,12 +56,12 @@ public class User implements Serializable{
 	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
-	public long getCreateTime() {
+	public String getCreateTime() {
 		return createTime;
 	}
-	public void setCreateTime(long createTime) {
-		this.createTime = createTime;
-	}
+//	public void setCreateTime(String createTime) {
+//		this.createTime = createTime;
+//	}
 	
 	public List<Role> getRoles() {
 		return roles;

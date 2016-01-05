@@ -10,5 +10,5 @@ public interface PathService {
 	public List<Path> findPathsByName(String pathName);
 	public List<Path> findPathsByLikeName(String pathName);
 	public int update(Path path);
-	public int delete(Path path);
+	public int deleteById(int id);
 }

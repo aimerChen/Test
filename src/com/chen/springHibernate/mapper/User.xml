@@ -29,6 +29,10 @@
 		<where>u.name like #{name}</where>
 	</select>
 
+	<select id="queryAllUsers"  resultType="User">
+		select * from user;
+	</select>
+
 	<update id="updateUser" parameterType="Map">
 		update user set birthday=#{birthday},locked=#{locked}
 		<where> name=#{name} </where>

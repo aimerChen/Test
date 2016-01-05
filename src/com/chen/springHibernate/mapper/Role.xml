@@ -12,9 +12,9 @@
 	</insert>
 	<insert id="savePathForRole" parameterType="Path" useGeneratedKeys="true" keyProperty="id">
 		insert into rolepath
-			(name,role_id,path_id,updateTime)
+			(role_id,path_id)
 		values
-			(#{name},#{roleid},#{id},now());
+			(#{roleid},#{pathid});
 	</insert>
 
 	<!-- 批量插入，没有用到 -->
@@ -48,23 +48,29 @@
 		limit 1;
 	</select>
 	
+	<select id="queryRolePathById" parameterType="map" resultType="Path">
+		select * from rolepath c
+		<where> c.path_id=#{pathid} and c.role_id=#{roleid}</where>
+		limit 1;
+	</select>
+	
 	<select id="queryAllRoles" resultType="Role">
 		select * from role;
 	</select>
 		
-	<select id="queryPathsByRoleId" parameterType="int" resultType="Role">
-		select * from rolepath c <where> c.role_id=#{roleid} </where>
+	<select id="queryPathsByRoleId" parameterType="int" resultType="Path">
+		select * from path c where c.id in (select d.path_id from rolepath d where d.role_id=#{roleid})
 	</select>
 	
 	<delete id="deleteRole" parameterType="int">
-		delete * from role c <where> c.id=#{roleId} </where>
+		delete from role <where> id=#{roleId} </where>
 	</delete>
 		
 	<delete id="deletePathsByRoleId" parameterType="int">
-		delete * from rolepath c <where> c.role_id=#{role_id} </where>
+		delete from rolepath <where> role_id=#{roleId} </where>
 	</delete>
 	
 	<update id="updateRole" parameterType="Role">
-		update role set(name,updateTime) values(#{name},now()) updateTime=now() <where> id=#{id}</where>;
+		update role set name=#{name},updateTime=now() <where> id=#{id}</where>;
 	</update>
 </mapper>

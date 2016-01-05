@@ -24,17 +24,16 @@ drop table if exists path;
 create table path(
 	id int(11) auto_increment,
 	name varchar(128)  unique not null,
-	role_id int(11) not null,
 	createTime timestamp,
+	updateTime timestamp,
 	PRIMARY KEY (id) 
 )DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci engine=InnoDB;
 
 drop table if exists rolepath;
 create table rolepath(
 	id int(11) auto_increment,
-	role_id int(11) not null unique,
+	role_id int(11) not null,
 	path_id int(11) not null,
-	createTime timestamp,
 	PRIMARY KEY (id) 
 )DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci engine=InnoDB;
 
