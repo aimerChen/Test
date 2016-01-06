@@ -9,6 +9,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
+import com.chen.springHibernate.bean.Role;
 import com.chen.springHibernate.bean.User;
 import com.chen.springHibernate.dao.UserDao;
 
@@ -72,5 +73,10 @@ public class UserImpl implements UserDao{
 	@Override
 	public List<User> findAllUsers() {
 		return mSqlSessionTemplate.selectList("queryAllUsers");
+	}
+
+	@Override
+	public List<Role> findUserRolesById(int id) {
+		return mSqlSessionTemplate.selectList("findUserRolesById",id);
 	}
 }

@@ -1,5 +1,8 @@
 package com.chen.springHibernate.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chen.springHibernate.bean.Path;
 import com.chen.springHibernate.bean.Role;
+import com.chen.springHibernate.bean.User;
 import com.chen.springHibernate.service.PathService;
 import com.chen.springHibernate.service.RoleService;
 import com.chen.springHibernate.service.UserService;
@@ -31,7 +35,7 @@ public class SysUserController {
 	private PathService mPathService;
 	
 	@RequestMapping(value="createRole", method = RequestMethod.GET)
-	public String showRole(String name){
+	public String showRole(){
 		return "/sysUser/register_role";
 	}
 
@@ -49,17 +53,27 @@ public class SysUserController {
 	public int createRole(@RequestParam String name,@RequestParam String pathIdList){
 		System.out.println("role name:"+name+",pathIdList:"+pathIdList);
 		//1.先判断路径不为空
-		if(pathIdList!=null&&pathIdList.length()>0&&name!=null){
-			String[] pathIdStr=pathIdList.split(",");
-			int strLength=pathIdStr.length;
-			int[] pathArray =new int[strLength];
-			for(int i=0;i<strLength;i++){
-				if(pathIdStr[i].length()>0){
-					pathArray[i]=Integer.parseInt(pathIdStr[i]);
+		if(name!=null){
+			Role role=new Role();
+			role.setName(name);
+			//创建角色：如果角色已经存在，则不再创建；
+			if(mRoleService.register(role)){
+				String[] pathIdStr=pathIdList.split(",");
+				int strLength=pathIdStr.length;
+				Map<String,Integer> map=new HashMap<String,Integer>();
+				map.put("roleid", role.getId());
+				for(int i=0;i<strLength;i++){
+					if(pathIdStr[i].length()>0){
+						int pathid=Integer.parseInt(pathIdStr[i]);
+						//为角色创建path
+						map.put("pathid", pathid);
+						mRoleService.addRolePath(map);
+					}
 				}
+				return 1;
+			}else{
+				return 0;
 			}
-			//2角色存不存在：存在，则更新对应的path；否则，先创建角色，再创建path
-			return mRoleService.register(name,pathArray)==true?1:0;
 		}
 		return -1;
 	}
@@ -68,9 +82,9 @@ public class SysUserController {
 	 * 返回所有的角色
 	 * @return
 	 */
-	@RequestMapping(value="findAllRoles", method = RequestMethod.POST)
+	@RequestMapping(value="showAllRoles", method = RequestMethod.POST)
 	@ResponseBody
-	public String findAllRoles(){
+	public String showAllRoles(){
 		return new Gson().toJson(mRoleService.findAllRoles());
 	}
 	
@@ -99,10 +113,16 @@ public class SysUserController {
 		String[] strArr=pathListId.split(",");
 		int result= mRoleService.update(role);
 		if(result==1){
-			mRoleService.deleteRolePathsById(id);
-			for(int i=0;i<strArr.length;i++){
-				
-				mRoleService.addRolePaths(map);
+			Map<String,Integer> map=new HashMap<String,Integer>();
+			map.put("roleid", id);
+			int pathId=0;
+			mRoleService.deleteRolePathsById(id);//先删除所有的path
+			for(int i=0;i<strArr.length;i++){//再添加新的path
+				if(strArr[i].length()>0){
+					pathId=Integer.parseInt(strArr[i]);
+					map.put("pathid", pathId);
+					mRoleService.addRolePath(map);
+				}
 			}
 		}
 		return result;
@@ -115,7 +135,7 @@ public class SysUserController {
 	 * @return
 	 */
 	@RequestMapping(value="createPath", method = RequestMethod.GET)
-	public String showPath(String name){
+	public String showPath(){
 		return "/sysUser/register_path";
 	}
 	
@@ -176,6 +196,14 @@ public class SysUserController {
 	}
 	
 	
+	/**
+	 * 返回所有的用户
+	 * @return
+	 */
+	@RequestMapping(value="createUser", method = RequestMethod.GET)
+	public String showUser(){
+		return "/sysUser/register_user";
+	}
 	
 	/**
 	 * 返回所有的用户
@@ -187,28 +215,45 @@ public class SysUserController {
 		return new Gson().toJson(mUserService.findAllUsers());
 	}
 	
+	
 	/**
 	 * 
-	 * @param userId
-	 * @param roleIdStr
+	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value="addRolesForUser", method = RequestMethod.POST)
+	@RequestMapping(value="deleteUserById", method = RequestMethod.POST)
 	@ResponseBody
-	public int addRolesForUser(@RequestParam int userId,@RequestParam String roleIdStr){
-		if(roleIdStr!=null&&userId>=0){
-			String[] ints=roleIdStr.split(",");
-			int[] rolesId = new int[ints.length];
-			for(int i=0;i<ints.length;i++){
-				rolesId[i]=Integer.parseInt(ints[i]);
+	public int deleteUserById(@RequestParam int id){
+		return mUserService.deleteUserById(id)?1:0;
+	}
+	
+	/**
+	 * 
+	 * @param path
+	 * @return
+	 */
+	@RequestMapping(value="updateUserById", method = RequestMethod.POST)
+	@ResponseBody
+	public int updateUserById(@RequestParam int id,@RequestParam String name,@RequestParam String pathListId){
+		User user=new User();
+		user.setId(id);
+		user.setName(name);
+		String[] strArr=pathListId.split(",");
+		int result= mUserService.updateUser(user);
+		if(result==1){
+			Map<String,Integer> map=new HashMap<String,Integer>();
+			map.put("userId", id);
+			int roleId=0;
+			mUserService.deleteAllRolesOfUser(id);//先删除所有的path
+			for(int i=0;i<strArr.length;i++){//再添加新的path
+				if(strArr[i].length()>0){
+					roleId=Integer.parseInt(strArr[i]);
+					map.put("roleId", roleId);
+					mUserService.addUserRole(map);
+				}
 			}
-			if(userId>=0){
-				mUserService.addRolesForUser(userId, rolesId);
-			}
-			return 1;
 		}
-		return 0;
+		return result;
 	}
 
-	
 }

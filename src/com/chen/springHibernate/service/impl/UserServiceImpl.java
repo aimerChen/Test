@@ -1,6 +1,5 @@
 package com.chen.springHibernate.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,23 +29,15 @@ public class UserServiceImpl implements UserService {
 		}
 		return result;
 	}
-
-//	Map<String,Object> pm=new HashMap<String,Object>();
-//	pm.put("userId", user.getId());
-//	if(user.getRoles()!=null){
-//		List<Role> roles=user.getRoles();
-//		for(Role role:roles){
-//			pm.put("roleId", rolesId[i]);
-//			if(mSqlSessionTemplate.delete("removeRoelsForUser",pm)==1){
-//				result++;
-//			}
-//		}
-//	}
 	
 	@Override
 	public User findUserByName(String name) {
 		if (name != null) {
-			return mUserDao.findUserByName(name);
+			User user= mUserDao.findUserByName(name);
+			if(user!=null){
+				user.setRoles(mUserDao.findUserRolesById(user.getId()));
+			}
+			return user;
 		} else {
 			return null;
 		}
@@ -65,39 +56,21 @@ public class UserServiceImpl implements UserService {
 	 * 返回添加role的个数
 	 */
 	@Override
-	public int addRolesForUser(int userId, int[] rolesId) {
-		Map<String,Integer> map=new HashMap<String,Integer>();
-		map.put("userId", userId);
-		int result=0;
-		for(int i=0;i<rolesId.length;i++){
-			map.put("roleId", rolesId[i]);
-			if(mUserDao.addRole(map)==1){
-				result++;
-			}
-		}
-		return result;
+	public int addUserRole(Map<String,Integer> map) {
+		return mUserDao.addRole(map);
 	}
 
 	/**
 	 * 返回删除role的个数
 	 */
 	@Override
-	public int deleteRolesForUser(int userId,int[] rolesId) {
-		Map<String,Integer> pm=new HashMap<String,Integer>();
-		pm.put("userId", userId);
-		int result=0;
-		for(int i=0;i<rolesId.length;i++){
-			pm.put("roleId", rolesId[i]);
-			if(mUserDao.deleteRole(pm)==1){
-				result++;
-			}
-		}
-		return result;
+	public int deleteUserRole(Map<String, Integer> map) {
+		return mUserDao.deleteRole(map);
 	}
 
 	@Override
-	public boolean delete(User user) {
-		return (mUserDao.deleteUserById(user.getId())==1)&&(mUserDao.deleteAllRolesOfUser(user.getId())>=0);
+	public boolean deleteUserById(int userId){
+		return (mUserDao.deleteUserById(userId)==1)&&(mUserDao.deleteAllRolesOfUser(userId)>=0);
 	}
 
 	@Override
@@ -105,4 +78,13 @@ public class UserServiceImpl implements UserService {
 		return mUserDao.findAllUsers();
 	}
 
+	@Override
+	public int updateUser(User user) {
+		return mUserDao.updateUser(user);
+	}
+
+	@Override
+	public int deleteAllRolesOfUser(int userId) {
+		return mUserDao.deleteAllRolesOfUser(userId);
+	}
 }

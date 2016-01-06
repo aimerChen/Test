@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.chen.springHibernate.bean.Path;
+import com.chen.springHibernate.bean.Role;
 import com.chen.springHibernate.dao.PathDao;
 
 @Repository
@@ -35,14 +36,24 @@ public class PathImpl implements PathDao {
 		return sqlSessionTemplate.selectList("queryPathsByLikeName", pathName);
 	}
 
-	@Override
-	public int deleteById(int id) {
-		return sqlSessionTemplate.delete("deletePathById", id);
-	}
 
 	@Override
 	public List<Path> findAllPaths() {
 		return sqlSessionTemplate.selectList("findAllPaths");
 	}
 
+	@Override
+	public List<Role> findRolesofPathById(int pathId) {
+		return sqlSessionTemplate.selectList("findRolesofPathById",pathId);
+	}
+
+	@Override
+	public int deletePathById(int id) {
+		return sqlSessionTemplate.delete("deletePathById", id);
+	}
+
+	@Override
+	public int deletePathRolesById(int id) {
+		return sqlSessionTemplate.delete("deletePathRolesById", id);
+	}
 }

@@ -1,6 +1,5 @@
 package com.chen.springHibernate.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,41 +20,24 @@ public class RoleServiceImpl implements RoleService{
 	private RoleDao roleDao;
 	
 	@Override
-	public boolean register(String roleName,int[] pathIdList) {
-		Role dbRole=roleDao.findRoleByName(roleName);
-		int id=-1;
-		Role role=new Role();
+	public boolean register(Role role) {
+		Role dbRole=roleDao.findRoleByName(role.getName());
 		if(dbRole!=null){
 			//角色存在，则更新角色对应的path
-//			id=dbRole.getId();
 			return false;
-		}else{//创建角色和path
-			role.setName(roleName);
+		}else{//创建角色
 			if(roleDao.register(role)==1){//role 创建成功
-				id=role.getId();
+				return true;
 			}else{
 				//角色创建不成功
 				return false;
 			}
 		}
-		//role在数据库存在了,然后插入对应的path权限
-		if(id>=0&&pathIdList.length>0){
-			Map<String,Integer> pm=new HashMap<String,Integer>();
-			pm.put("roleid", role.getId());
-			for(int i=0;i<pathIdList.length;i++){
-				pm.put("pathid", pathIdList[i]);
-				if(roleDao.findRolePathById(pm)==null){
-					//该角色对应的path没有插入到数据库，现在插入
-					addRolePaths(pm);
-				}
-			}
-		}
-		return true;
 	}
 	
 
 	@Override
-	public int addRolePaths(Map<String, Integer> map) {
+	public int addRolePath(Map<String, Integer> map) {
 		return roleDao.registerPathForRole(map);
 	}
 
@@ -114,8 +96,7 @@ public class RoleServiceImpl implements RoleService{
 
 	@Override
 	public int deleteRolePathsById(int roleId) {
-		// TODO Auto-generated method stub
-		return 0;
+		return roleDao.deletePathsByRoleId(roleId);
 	}
 
 

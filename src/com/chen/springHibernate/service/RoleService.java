@@ -7,7 +7,7 @@ import com.chen.springHibernate.bean.Path;
 import com.chen.springHibernate.bean.Role;
 
 public interface RoleService {
-	public boolean register(String roleName,int[] pathIdList);
+	public boolean register(Role role);
 	public Role findRoleByName(String roleName);
 	public Role findRoleById(int roleId);
 	public List<Role> findAllRoles();
@@ -15,5 +15,5 @@ public interface RoleService {
 	public int update(Role role);
 	public Path findRolePathById(Map<String,Integer> map);
 	public int deleteRolePathsById(int roleId);
-	public int addRolePaths(Map<String,Integer> map);
+	public int addRolePath(Map<String,Integer> map);
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.chen.springHibernate.bean.Path;
+import com.chen.springHibernate.bean.Role;
 import com.chen.springHibernate.dao.PathDao;
 import com.chen.springHibernate.service.PathService;
 
@@ -55,8 +56,15 @@ public class PathServiceImpl implements PathService{
 	@Override
 	public int deleteById(int id) {
 		// TODO Auto-generated method stub
-		return pathDao.deleteById(id);
+		int result=0;
+		if((result=pathDao.deletePathById(id))==1){
+			pathDao.deletePathRolesById(id);
+		}
+		return result;
 	}
-	
 
+	@Override
+	public List<Role> findRolesofPathById(int pathId) {
+		return pathDao.findRolesofPathById(pathId);
+	}
 }

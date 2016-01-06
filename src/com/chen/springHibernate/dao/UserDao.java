@@ -3,11 +3,15 @@ package com.chen.springHibernate.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.chen.springHibernate.bean.Role;
 import com.chen.springHibernate.bean.User;
 
 public interface UserDao {
 	public int create(User user);
 	public User findUserByName(String userName);
+
+	public List<Role> findUserRolesById(int userId);
+	
 	/**
 	 * 根据输入的字符搜索
 	 * @param name

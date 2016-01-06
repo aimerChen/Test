@@ -31,13 +31,17 @@
 	</select>
 
 	<select id="queryPathsByLikeName" parameterType="java.lang.String"
-		resultType="Role">
+		resultType="Path">
 		select * from path c
 		<where> c.name like #{pathName}</where>
 	</select>
 
-	<select id="findAllPaths" resultType="Role">
+	<select id="findAllPaths" resultType="Path">
 		select * from path;
+	</select>
+
+	<select id="findRolesofPathById" parameterType="int" resultType="Role">
+		select * from role r where r.id in (select d.role_id from rolepath d where d.path_id=#{pathId})
 	</select>
 
 	<update id="updatePath" parameterType="Path">
@@ -48,6 +52,10 @@
 	<delete id="deletePathById" parameterType="int">
 		DELETE FROM path
 		<where> id=#{id}</where>
+	</delete>
+	
+	<delete id="deletePathRolesById" parameterType="int">
+		delete from rolepath c where c.path_id=#{id}	
 	</delete>
 
 

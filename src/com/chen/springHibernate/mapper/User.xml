@@ -33,12 +33,18 @@
 		select * from user;
 	</select>
 
+	<select id="findUserRolesById" parameterType="int" resultType="Role">
+		select * from role r where r.id in (select ru.roleid from roleuser ru where ru.userid=#{id} );
+	</select>
+	
 	<update id="updateUser" parameterType="Map">
-		update user set birthday=#{birthday},locked=#{locked}
-		<where> name=#{name} </where>
+		update user set 
+		<if test="birthday!=null and birthday!=''"> birthday=#{birthday}</if>
+		<if test="name!=null and name!=''"> name=#{name}</if>
+		<where> id=#{id} </where>
 	</update>
 	<delete id="deleteUserById" parameterType="java.lang.Integer">
-		delete * from user
+		delete from user
 		<where> id=#{id}</where>
 	</delete>
 
@@ -49,11 +55,11 @@
 	</insert>
 	
 	<delete id="deleteRoleOfUser" parameterType="Map">
-		delete * from roleuser <where> roleid=#{roleId} and userid=#{userId}</where>
+		delete from roleuser <where> roleid=#{roleId} and userid=#{userId}</where>
 	</delete>
 
 	<delete id="deleteAllRolesOfUser" parameterType="int">
-		delete * from roleuser <where> userid=#{userId}</where>
+		delete from roleuser <where> userid=#{userId}</where>
 	</delete>
 
 </mapper>
