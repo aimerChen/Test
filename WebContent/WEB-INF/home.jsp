@@ -30,9 +30,9 @@ function logout(){
 <shiro:authenticated>
 	<shiro:hasRole name="sysUser">
 		<ul>
-			<li><a href="<%=request.getContextPath()%>/sysUser/createPath.shtml">管理路径</a></li>
 			<li><a href="<%=request.getContextPath()%>/sysUser/createRole.shtml">管理角色</a></li>
-			<li><a href="<%=request.getContextPath()%>/sysUser/home.shtml">查看登录记录</a></li>
+			<li><a href="<%=request.getContextPath()%>/sysUser/createPath.shtml">管理路径</a></li>
+			<li><a href="<%=request.getContextPath()%>/sysUser/createUser.shtml">管理用户</a></li>
 		</ul>
 	</shiro:hasRole>
 	<shiro:hasRole name="admin">
@@ -41,7 +41,9 @@ function logout(){
 	<center>
 		<h1>User Home</h1>
 	</center>
-
+	<div>
+		<p><a href="<%=request.getContextPath()%>/test/test.jsp">Test</a></p>
+	</div>
 	<table border="1" align="center">
 		<tr bgcolor="#949494">
 			<th>User info</th>
