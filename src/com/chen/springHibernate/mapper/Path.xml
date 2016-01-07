@@ -24,6 +24,11 @@
 		</foreach>
 	</insert>
 
+
+	<insert id="addRoleForPath" parameterType="map" useGeneratedKeys="true" keyProperty="id">
+		insert into rolepath(role_id,path_id) values(#{roleId}，#{pathId});
+	</insert>
+
 	<select id="queryPathByName" parameterType="java.lang.String"
 		resultType="Path">
 		select * from path c

@@ -1,6 +1,7 @@
 package com.chen.springHibernate.dao.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +18,10 @@ public class PathImpl implements PathDao {
 	private SqlSessionTemplate sqlSessionTemplate;
 
 	@Override
-	public int register(Path path) {
+	public int create(Path path) {
 		return sqlSessionTemplate.insert("savePath", path);
 	}
-
-	@Override
-	public int update(Path path) {
-		return sqlSessionTemplate.update("updatePath", path);
-	}
-
+	
 	@Override
 	public Path findPathByName(String pathName) {
 		return sqlSessionTemplate.selectOne("queryPathByName", pathName);
@@ -43,17 +39,32 @@ public class PathImpl implements PathDao {
 	}
 
 	@Override
-	public List<Role> findRolesofPathById(int pathId) {
+	public int update(Path path) {
+		return sqlSessionTemplate.update("updatePath", path);
+	}
+
+	@Override
+	public int delete(int id) {
+		return sqlSessionTemplate.delete("deletePathById", id);
+	}
+	
+	/**
+	 * ======================================================================Role====================================================================
+	 */
+	
+	@Override
+	public int addRole(Map<String,Integer> map) {
+		return sqlSessionTemplate.insert("addRoleForPath", map);
+	}
+
+	@Override
+	public List<Role> findRoles(int pathId) {
 		return sqlSessionTemplate.selectList("findRolesofPathById",pathId);
 	}
 
 	@Override
-	public int deletePathById(int id) {
-		return sqlSessionTemplate.delete("deletePathById", id);
-	}
-
-	@Override
-	public int deletePathRolesById(int id) {
+	public int deleteRoles(int id) {
 		return sqlSessionTemplate.delete("deletePathRolesById", id);
 	}
+
 }

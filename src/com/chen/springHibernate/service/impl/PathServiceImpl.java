@@ -1,7 +1,10 @@
 package com.chen.springHibernate.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,16 +22,28 @@ public class PathServiceImpl implements PathService{
 	private PathDao pathDao;
 
 	@Override
-	public boolean register(Path path) {
+	public boolean create(Path path) {
 		Path dbPath=pathDao.findPathByName(path.getName());
+		boolean created=false;
 		if(dbPath!=null){
 			//角色存在，则更新角色对应的path
-			return false;
+			created=false;
 		}else{//创建角色和path
-			return pathDao.register(path)==1;//role 创建成功
+			created=pathDao.create(path)==1;//role 创建成功
 		}
+		if(created&&path.getRoles()!=null){
+			Map<String,Integer> map=new HashMap<String,Integer>();
+			map.put("pathId", path.getId());
+			for(Role role:path.getRoles()){
+				if(role.getId()>=0){
+					map.put("roleId", role.getId());
+					pathDao.addRole(map);
+				}
+			}
+		}
+		return created;
 	}
-
+	
 	@Override
 	public List<Path> findPathsByName(String pathName) {
 		// TODO Auto-generated method stub
@@ -42,29 +57,59 @@ public class PathServiceImpl implements PathService{
 	}
 
 	@Override
-	public int update(Path path) {
-		// TODO Auto-generated method stub
-		return pathDao.update(path);
-	}
-
-	@Override
 	public List<Path> findAllPaths() {
 		// TODO Auto-generated method stub
-		return pathDao.findAllPaths();
+		List<Path> plist=pathDao.findAllPaths();
+		if(plist!=null){
+			for(Path path:plist){
+				path.setRoles(pathDao.findRoles(path.getId()));
+			}
+		}
+		return plist;
 	}
 
 	@Override
-	public int deleteById(int id) {
+	public int update(Path path) {
 		// TODO Auto-generated method stub
 		int result=0;
-		if((result=pathDao.deletePathById(id))==1){
-			pathDao.deletePathRolesById(id);
+		//改名字
+		if(!StringUtils.isEmpty(path.getName())){
+			result=pathDao.update(path);
+		}
+		if(path.getRoles()!=null&&path.getRoles().size()>0){
+			//删除所有的role
+			pathDao.deleteRoles(path.getId());
+			List<Role> rList=path.getRoles();
+			Map<String,Integer> map=new HashMap<>();
+			map.put("pathId", path.getId());
+			for(Role role:rList){
+				map.put("roleId", role.getId());
+				//逐个添加role
+				pathDao.addRole(map);
+			}
+		}
+		return result;
+	}
+
+
+	@Override
+	public int delete(int id) {
+		// TODO Auto-generated method stub
+		int result=0;
+		if((result=pathDao.delete(id))==1){
+			pathDao.deleteRoles(id);
 		}
 		return result;
 	}
 
 	@Override
-	public List<Role> findRolesofPathById(int pathId) {
-		return pathDao.findRolesofPathById(pathId);
+	public List<Role> findRoles(int pathId) {
+		return pathDao.findRoles(pathId);
 	}
+//	
+//	@Override
+//	public int addRoleForPath(Map<String, Integer> map) {
+//		return pathDao.addRoleForRole(map);
+//	}
+
 }

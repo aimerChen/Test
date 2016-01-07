@@ -51,7 +51,7 @@ public class ChainDefinitionSectionMetaSource implements FactoryBean<Ini.Section
 		List<Path> pList=mPathService.findAllPaths();
 		String roles="";
 		for(Path path:pList){
-			roles=convertListToString(mPathService.findRolesofPathById(path.getId()));
+			roles=convertListToString(mPathService.findRoles(path.getId()));
 			if(!StringUtils.isEmpty(roles)){
 				section.put(path.getName(),"roles["+roles+"]");
 			}

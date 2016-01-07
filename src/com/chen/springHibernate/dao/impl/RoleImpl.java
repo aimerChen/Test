@@ -46,7 +46,7 @@ public class RoleImpl  implements RoleDao{
 //	}
 //	
 	@Override
-	public int register(Role role) {
+	public int create(Role role) {
 		return mSqlSessionTemplate.insert("saveRole",role);
 	}
 
@@ -54,45 +54,50 @@ public class RoleImpl  implements RoleDao{
 	public Role findRoleByName(String roleName) {
 		return mSqlSessionTemplate.selectOne("queryRoleByName",roleName);
 	}
+	
+	@Override
+	public Role findRoleById(int roleId) {
+		return mSqlSessionTemplate.selectOne("queryRoleByRoleId", roleId);
+	}
 
+	
+	@Override
+	public List<Role> findAllRoles() {
+		return mSqlSessionTemplate.selectList("queryAllRoles");
+	}
+	
 	@Override
 	public int update(Role role) {
 		return mSqlSessionTemplate.update("updateRole",role);
 	}
 
 	@Override
-	public List<Role> queryAllRoles() {
-		return mSqlSessionTemplate.selectList("queryAllRoles");
+	public int delete(int roleId) {
+		return mSqlSessionTemplate.delete("deleteRole", roleId);
 	}
 
-
+	/**
+	 * ====================================================================Path=================================================================
+	 */
 	@Override
-	public List<Path> queryPathsByRoleId(int roleId) {
+	public int addPath(Map<String,Integer> map) {
+		return mSqlSessionTemplate.insert("savePathForRole", map);
+	}
+	
+	@Override
+	public List<Path> findPaths(int roleId) {
 		return mSqlSessionTemplate.selectList("queryPathsByRoleId", roleId);
 	}
 
 	@Override
-	public int deletePathsByRoleId(int roleId) {
+	public int deletePaths(int roleId) {
 		return mSqlSessionTemplate.delete("deletePathsByRoleId", roleId);
 	}
-
+	/**
+	 * ====================================================================User=================================================================
+	 */
 	@Override
-	public int registerPathForRole(Map<String,Integer> map) {
-		return mSqlSessionTemplate.insert("savePathForRole", map);
-	}
-
-	@Override
-	public Role findRoleById(int roleId) {
-		return mSqlSessionTemplate.selectOne("queryRoleByRoleId", roleId);
-	}
-
-	@Override
-	public int deleteRole(int roleId) {
-		return mSqlSessionTemplate.delete("deleteRole", roleId);
-	}
-
-	@Override
-	public Path findRolePathById(Map<String,Integer> map) {
-		return mSqlSessionTemplate.selectOne("queryRolePathById", map);
+	public int deleteUsers(int roleId) {
+		return mSqlSessionTemplate.delete("deleteUsersByRoleId", roleId);
 	}
 }

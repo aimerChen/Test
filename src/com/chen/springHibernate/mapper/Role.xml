@@ -14,7 +14,7 @@
 		insert into rolepath
 			(role_id,path_id)
 		values
-			(#{roleid},#{pathid});
+			(#{roleId},#{pathId});
 	</insert>
 
 	<!-- 批量插入，没有用到 -->
@@ -32,7 +32,7 @@
 			(role_id,path_id,createTime)
 		values
 		<foreach collection="list" item="item" separator="," index="index">
-			(#{roleid},#{item.id},now());
+			(#{roleId},#{item.id},now());
 		</foreach>
 	</insert>
 
@@ -50,7 +50,7 @@
 	
 	<select id="queryRolePathById" parameterType="map" resultType="Path">
 		select * from rolepath c
-		<where> c.path_id=#{pathid} and c.role_id=#{roleid}</where>
+		<where> c.path_id=#{pathId} and c.role_id=#{roleId}</where>
 		limit 1;
 	</select>
 	
@@ -59,7 +59,7 @@
 	</select>
 		
 	<select id="queryPathsByRoleId" parameterType="int" resultType="Path">
-		select * from path c where c.id in (select d.path_id from rolepath d where d.role_id=#{roleid})
+		select * from path c where c.id in (select d.path_id from rolepath d where d.role_id=#{roleId})
 	</select>
 	
 	<delete id="deleteRole" parameterType="int">
@@ -68,6 +68,10 @@
 		
 	<delete id="deletePathsByRoleId" parameterType="int">
 		delete from rolepath <where> role_id=#{roleId} </where>
+	</delete>
+	
+	<delete id="deleteUsersByRoleId" parameterType="int">
+		delete from roleuser <where> role_id=#{roleId} </where>
 	</delete>
 	
 	<update id="updateRole" parameterType="Role">

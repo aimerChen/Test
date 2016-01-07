@@ -49,7 +49,7 @@ public class UserController {
 		SimpleHash hash = new SimpleHash(Md5Hash.ALGORITHM_NAME, user.getPassword(), salt, 2);
 		user.setPassword(hash.toHex());
 		user.setSalt(salt);
-		if (mUserService.register(user)) {
+		if (mUserService.create(user)) {
 			System.out.println("注册成功");
 			return "success";
 		} else {

@@ -19,7 +19,7 @@ public class Role implements Serializable{
 
 	private int id;
 	private String name="";
-	private List<Path> path;
+	private List<Path> paths;
 	private String createTime;
 	public int getId() {
 		return id;
@@ -42,12 +42,12 @@ public class Role implements Serializable{
 //		this.createTime = createTime;
 //	}
 
-	public List<Path> getPath() {
-		return path;
+	public List<Path> getPaths() {
+		return paths;
 	}
 
-	public void setPath(List<Path> path) {
-		this.path = path;
+	public void setPaths(List<Path> paths) {
+		this.paths = paths;
 	}
 	
 }

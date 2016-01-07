@@ -1,8 +1,5 @@
 package com.chen.springHibernate.controllers;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -18,6 +15,7 @@ import com.chen.springHibernate.bean.User;
 import com.chen.springHibernate.service.PathService;
 import com.chen.springHibernate.service.RoleService;
 import com.chen.springHibernate.service.UserService;
+import com.chen.springHibernate.util.Utils;
 import com.google.gson.Gson;
 
 @Controller
@@ -47,29 +45,21 @@ public class SysUserController {
 	 * <p>-1:表示没接收到某些字段
 	 * <p>0:表示已经占用
 	 * <p>1:创建成功
+	 * <p>2：系统预留角色，不能被创建
 	 */
 	@RequestMapping(value="createRole", method = RequestMethod.POST)
 	@ResponseBody
-	public int createRole(@RequestParam String name,@RequestParam String pathIdList){
-		System.out.println("role name:"+name+",pathIdList:"+pathIdList);
+	public int createRole(@RequestParam String name){
+		System.out.println("role name:"+name);
 		//1.先判断路径不为空
 		if(name!=null){
+			if(name.equalsIgnoreCase(Utils.DEFAULT_SYSUSER)){
+				return 2;
+			}
 			Role role=new Role();
 			role.setName(name);
 			//创建角色：如果角色已经存在，则不再创建；
-			if(mRoleService.register(role)){
-				String[] pathIdStr=pathIdList.split(",");
-				int strLength=pathIdStr.length;
-				Map<String,Integer> map=new HashMap<String,Integer>();
-				map.put("roleid", role.getId());
-				for(int i=0;i<strLength;i++){
-					if(pathIdStr[i].length()>0){
-						int pathid=Integer.parseInt(pathIdStr[i]);
-						//为角色创建path
-						map.put("pathid", pathid);
-						mRoleService.addRolePath(map);
-					}
-				}
+			if(mRoleService.create(role)){
 				return 1;
 			}else{
 				return 0;
@@ -78,6 +68,19 @@ public class SysUserController {
 		return -1;
 	}
 
+	/**
+	 * 检查角色是否能被床架
+	 * @return
+	 * <p>1:能被创建
+	 * <p>0:不能被创建
+	 */
+	@RequestMapping(value="checkRole", method = RequestMethod.POST)
+	@ResponseBody
+	public int checkRole(){
+		return 1;
+	}
+	
+	
 	/**
 	 * 返回所有的角色
 	 * @return
@@ -96,7 +99,7 @@ public class SysUserController {
 	@RequestMapping(value="deleteRoleById", method = RequestMethod.POST)
 	@ResponseBody
 	public int deleteRoleById(@RequestParam int id){
-		return mRoleService.deleteRoleById(id);
+		return mRoleService.delete(id);
 	}
 	
 	/**
@@ -106,29 +109,10 @@ public class SysUserController {
 	 */
 	@RequestMapping(value="updateRoleById", method = RequestMethod.POST)
 	@ResponseBody
-	public int updateRoleById(@RequestParam int id,@RequestParam String name,@RequestParam String pathListId){
-		Role role=new Role();
-		role.setId(id);
-		role.setName(name);
-		String[] strArr=pathListId.split(",");
-		int result= mRoleService.update(role);
-		if(result==1){
-			Map<String,Integer> map=new HashMap<String,Integer>();
-			map.put("roleid", id);
-			int pathId=0;
-			mRoleService.deleteRolePathsById(id);//先删除所有的path
-			for(int i=0;i<strArr.length;i++){//再添加新的path
-				if(strArr[i].length()>0){
-					pathId=Integer.parseInt(strArr[i]);
-					map.put("pathid", pathId);
-					mRoleService.addRolePath(map);
-				}
-			}
-		}
-		return result;
+	public int updateRoleById(@ModelAttribute Role role){
+		return mRoleService.update(role);
 	}
-	
-	
+
 	/**
 	 * 返回path jsp页面
 	 * @param name
@@ -154,7 +138,7 @@ public class SysUserController {
 			for(int i=0;i<pathArr.length;i++){
 				path=new Path();
 				path.setName(pathArr[i]);
-				if(mPathService.register(path)){
+				if(mPathService.create(path)){
 					result++;
 				}
 			}
@@ -181,7 +165,7 @@ public class SysUserController {
 	@RequestMapping(value="deletePathById", method = RequestMethod.POST)
 	@ResponseBody
 	public int deletePathById(@RequestParam int id){
-		return mPathService.deleteById(id);
+		return mPathService.delete(id);
 	}
 	
 	/**
@@ -224,7 +208,7 @@ public class SysUserController {
 	@RequestMapping(value="deleteUserById", method = RequestMethod.POST)
 	@ResponseBody
 	public int deleteUserById(@RequestParam int id){
-		return mUserService.deleteUserById(id)?1:0;
+		return mUserService.delete(id)?1:0;
 	}
 	
 	/**
@@ -234,26 +218,8 @@ public class SysUserController {
 	 */
 	@RequestMapping(value="updateUserById", method = RequestMethod.POST)
 	@ResponseBody
-	public int updateUserById(@RequestParam int id,@RequestParam String name,@RequestParam String pathListId){
-		User user=new User();
-		user.setId(id);
-		user.setName(name);
-		String[] strArr=pathListId.split(",");
-		int result= mUserService.updateUser(user);
-		if(result==1){
-			Map<String,Integer> map=new HashMap<String,Integer>();
-			map.put("userId", id);
-			int roleId=0;
-			mUserService.deleteAllRolesOfUser(id);//先删除所有的path
-			for(int i=0;i<strArr.length;i++){//再添加新的path
-				if(strArr[i].length()>0){
-					roleId=Integer.parseInt(strArr[i]);
-					map.put("roleId", roleId);
-					mUserService.addUserRole(map);
-				}
-			}
-		}
-		return result;
+	public int updateUserById(@ModelAttribute User user){
+		return mUserService.update(user);
 	}
 
 }

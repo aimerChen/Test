@@ -38,24 +38,26 @@ public class UserImpl implements UserDao{
 		System.out.println("走数据库List");
 		return mSqlSessionTemplate.selectList("queryUsersByLikeName",name);
 	}
+	
+	@Override
+	public List<User> findAllUsers() {
+		return mSqlSessionTemplate.selectList("queryAllUsers");
+	}
 
 	@Override
-	public int updateUser(User user) {
+	public int update(User user) {
 		return mSqlSessionTemplate.update("updateUser",user);
 	}
 
 	@Override
-	public int deleteUserById(int id) {
-		return mSqlSessionTemplate.update("deleteUserById",id);
+	public int delete(int id) {
+		return mSqlSessionTemplate.delete("deleteUserById",id);
 	}
-
+	
 	/**
-	 * map中的key名字：roleId，userId
+	 * ====================================================================Role==========================================================================
 	 */
-	@Override
-	public int deleteRole(Map<String, Integer> map) {
-		return mSqlSessionTemplate.delete("deleteRoleOfUser",map);
-	}
+	
 
 	/**
 	 * map中的key名字：roleId，userId
@@ -66,17 +68,21 @@ public class UserImpl implements UserDao{
 	}
 
 	@Override
-	public int deleteAllRolesOfUser(int userId) {
+	public List<Role> findRoles(int id) {
+		return mSqlSessionTemplate.selectList("findUserRolesById",id);
+	}
+	
+	@Override
+	public int deleteRoles(int userId) {
 		return mSqlSessionTemplate.delete("deleteAllRolesOfUser",userId);
 	}
 
-	@Override
-	public List<User> findAllUsers() {
-		return mSqlSessionTemplate.selectList("queryAllUsers");
-	}
-
-	@Override
-	public List<Role> findUserRolesById(int id) {
-		return mSqlSessionTemplate.selectList("findUserRolesById",id);
-	}
+	
+//	/**
+//	 * map中的key名字：roleId，userId
+//	 */
+//	@Override
+//	public int deleteRole(Map<String, Integer> map) {
+//		return mSqlSessionTemplate.delete("deleteRoleOfUser",map);
+//	}
 }
