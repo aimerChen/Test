@@ -87,6 +87,8 @@
 		<property name="filterChainDefinitions">
 			<value>
 				/js/**=anon
+				/css/**=anon
+				/fonts/**=anon
 				/index.shtml**= anon,kickout
 				/user/register.shtml**= anon,kickout
 				/user/login.shtml** = anon,kickout

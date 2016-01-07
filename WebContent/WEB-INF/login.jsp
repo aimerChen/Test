@@ -5,6 +5,7 @@
 <html>
 <head>
 <title>Login</title>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/css/bootstrap.css"/>
 <script type="text/javascript"
 	src="<%=request.getContextPath() %>/js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript"
@@ -36,25 +37,20 @@
 </head>
 
 <body>
-	<!-- <shiro:guest>
-    Hi there!  Please <a href="login.jsp">Login</a> or <a href="signup.jsp">Signup</a> today!
-	</shiro:guest> -->
-	<form id="loginForm">
-		<!-- action="/user/login.shtml" method="post" -->
-		<table>
-			<tr>
-				<td>用户名</td>
-				<td><input type="text" id="username" name="username" /></td>
-			</tr>
-			<tr>
-				<td>密码</td>
-				<td><input type="password" id="password" name="password" /></td>
-			</tr>
-			<tr>
-				<td><input type="submit" value="登录" /></td>
-				<td><input type="button" value="注册" id="register" /></td>
-			</tr>
-		</table>
-	</form>
+	<div>
+		<form class="form-inline" id="loginForm" style="margin:20px;">
+			<div class="form-group">
+				<label for="username">用户名</label> <input type="text"
+					class="form-control" id="username" placeholder="Jane Doe">
+			</div>
+			<div class="form-group">
+				<label for="password">密码</label> <input type="password"
+					class="form-control" id="password"
+					placeholder="jane.doe@example.com">
+			</div>
+			<button type="submit" class="btn btn-default">登录</button>
+			<button type="button" id="register" class="btn btn-default">注册</button>
+		</form>
+	</div>
 </body>
 </html>

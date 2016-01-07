@@ -3,6 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/css/bootstrap.css"/>
 <script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/md5.js"></script>
@@ -40,26 +41,23 @@
 </head>
 
 <body>
-	<p>Login</p>
-	<form id="registerForm" method="post" action="<%=request.getContextPath()%>/user/register.shtml" >
-		<table>
-			<tr>
-				<td>用户名</td>
-				<td><input type="text" id="name" name="name"/></td>
-			</tr>
-			<tr>
-				<td>密码</td>
-				<td><input type="password" id="password" name="password"/></td>
-			</tr>
-			<tr>
-				<td>密码</td>
-				<td><input type="password" id="repeatPassword" name="repeatPassword"/></td>
-			</tr>
-			<tr>
-				<td><input type="button" value="注册" id="register"/></td>
-				<td><input type="button" value="登录" id="login"/></td>
-			</tr>
-		</table>
-	</form>
+	<div style="margin:20px;width:300px;height:300px;">
+		<form id="registerForm">
+			<div class="form-group">
+				<label for="name">用户名</label> 
+				<input type="text" class="form-control" id="name" placeholder="用户名">
+			</div>
+			<div class="form-group">
+				<label for="password">密码</label> 
+				<input type="password" class="form-control" id="password" placeholder="密码">
+			</div>
+			<div class="form-group">
+				<label for="repeatPassword">Repeat Password</label> 
+				<input type="password" id="repeatPassword" class="form-control"   placeholder="重复密码" />
+			</div>
+			<button type="button" class="btn btn-default" id="login">取消</button>
+			<button type="button" class="btn btn-default" id="register" style="float:right;">注册</button>
+		</form>
+	</div>
 </body>
 </html>
