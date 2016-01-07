@@ -98,23 +98,25 @@
 		
 		$("#register").click(function(){
 			var name=$("#name").val();
-			var idList=new Array();
-			$(".checkboxPathClass").each(function(index,item){
-				if(document.getElementById($(item).attr("id")).checked===true){
-					idList.push($(item).attr("id").split("_")[1]);			
-				}
-			});
+			//var idList=new Array();
+			//$(".checkboxPathClass").each(function(index,item){
+				//if(document.getElementById($(item).attr("id")).checked===true){
+					//idList.push($(item).attr("id").split("_")[1]);			
+				//}
+			//});
 			if(name==""){
 				alert("角色名字不能为空");
 				return false;
 			}
-			$.post(requestPath+"/sysUser/createRole.shtml",{name:name,pathIdList:idList.toString()},function(data){
+			$.post(requestPath+"/sysUser/createRole.shtml",{name:name},function(data){
 				if(data===1){
 					$("#name").val("");
 					alert("添加成功");
 					getAllRoles();
 				}else if(data===0){
 					alert("名字存在，添加失败");
+				}else if(data==2){
+					alert("该角色不能被创建");
 				}else{
 					alert("内部错误，添加失败");
 				}
